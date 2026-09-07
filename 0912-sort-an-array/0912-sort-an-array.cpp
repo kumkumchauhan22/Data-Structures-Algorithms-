@@ -1,28 +1,42 @@
 class Solution {
 public:
-    void merge(vector<int>& nums, int low, int mid, int high) {
+    void merge(vector<int>& nums, int left, int mid, int right) {
         vector<int> temp;
-        int i = low, j = mid + 1;
+        int i = left, j = mid + 1;
 
-        while (i <= mid && j <= high) {
-            if (nums[i] <= nums[j]) temp.push_back(nums[i++]);
-            else temp.push_back(nums[j++]);
+        // Merge two sorted halves
+        while (i <= mid && j <= right) {
+            if (nums[i] <= nums[j]) {
+                temp.push_back(nums[i]);
+                i++;
+            } else {
+                temp.push_back(nums[j]);
+                j++;
+            }
         }
-        while (i <= mid) temp.push_back(nums[i++]);
-        while (j <= high) temp.push_back(nums[j++]);
 
-        for (int k = low; k <= high; k++) {
-            nums[k] = temp[k - low];
+        // Copy remaining elements
+        while (i <= mid) {
+            temp.push_back(nums[i]);
+            i++;
+        }
+        while (j <= right) {
+            temp.push_back(nums[j]);
+            j++;
+        }
+
+        // Copy back to nums
+        for (int k = left; k <= right; k++) {
+            nums[k] = temp[k - left];
         }
     }
 
-    void mergesort(vector<int>& nums, int low, int high) {
-        if (low < high) {
-            int mid = low + (high - low) / 2;
-            mergesort(nums, low, mid);
-            mergesort(nums, mid + 1, high);
-            merge(nums, low, mid, high);
-        }
+    void mergesort(vector<int>& nums, int left, int right) {
+        if (left >= right) return;
+        int mid = (left + right) / 2;
+        mergesort(nums, left, mid);
+        mergesort(nums, mid + 1, right);
+        merge(nums, left, mid, right);
     }
 
     vector<int> sortArray(vector<int>& nums) {
