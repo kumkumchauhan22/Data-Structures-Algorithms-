@@ -11,11 +11,10 @@
  */
 class Solution {
 public:
-    bool dfs(TreeNode* root, long long minVal, long long maxVal) {
+    bool dfs(TreeNode* root,  long long min_Val, long long max_Val) {
         if (root == NULL) return true;
-        if (root->val <= minVal || root->val >= maxVal) return false;
-        return dfs(root->left, minVal, root->val) &&
-               dfs(root->right, root->val, maxVal);
+        if (root->val <= min_Val || root->val >= max_Val) return false;
+        return dfs(root->left, min_Val, root->val) && dfs(root->right, root->val, max_Val);
     }
 
     bool isValidBST(TreeNode* root) {
